@@ -30,7 +30,7 @@ public class Player {
     }
 
     private int game(JsonObject game){
-        if (round == 0){
+        if (communityCards.size() ==0){
             return zeroRoundBehaviour(game);
         }
         return notFirstRoundBehaviour();
@@ -106,7 +106,7 @@ public class Player {
         int bet = 0;
         bet = zeroRoundPairBet();
         if (bet == 0) bet = zeroRoundSameColorBet();
-        //if (bet == 0) bet = zeroRoundHighCardBet();
+        if (bet == 0) bet = zeroRoundHighCardBet();
         return bet;
     }
 
