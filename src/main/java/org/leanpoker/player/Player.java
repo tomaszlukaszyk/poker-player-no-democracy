@@ -123,7 +123,7 @@ public class Player {
     private int zeroRoundSameColorBet(){
         int bet = 0;
         if (holeCards.get(0).getSuit().equals(holeCards.get(1).getSuit())){
-            if (callValue > 0.3 * stack) bet = 0;
+            if (callValue > 0.03 * stack) bet = 0;
             else bet = callValue;
         }
         return bet;
