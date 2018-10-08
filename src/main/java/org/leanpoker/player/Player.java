@@ -15,6 +15,7 @@ public class Player {
     int currentBet;
     int minimumRaise;
     int stack;
+    int callValue;
     List<Card> holeCards = new ArrayList<>();
     List<Card> communityCards = new ArrayList<>();
 
@@ -45,6 +46,7 @@ public class Player {
         stack = getStack(game);
         holeCards = getHoleCards(game);
         communityCards = getCommunityCards(game);
+        callValue = currentBuyIn - currentBet;
 
     }
 
@@ -113,7 +115,7 @@ public class Player {
     private int zeroRoundPairBet(){
         int bet = 0;
         if (holeCards.get(0).getRank().equals(holeCards.get(1).getRank())){
-            bet = stack;
+            bet = callValue;
         }
         return bet;
     }
@@ -224,7 +226,7 @@ public class Player {
             return raiseByPercent(60);
         } else if (pair()) {
 
-            return raiseByPercent(20);
+            return callValue;
         } else if (highCard()) {
             return raiseByPercent(5);
         }
