@@ -29,6 +29,23 @@ public class Player {
         return 999;
     }
 
+//    private int zeroRoundBehaviour(){
+//        int bet = 0;
+//        if (firstCardrank.equals(secondCardrank)){
+//            if (stack < 10*minimal_raise){
+//                bet = stack;
+//            }
+//            else{
+//                bet = 10 * minimal_raise;
+//            }
+//        }
+//        if (firstCardSuit.equals(secondCardSuite)){
+//            if (minimal_raise<stack/10) bet = stack / 10;
+//            else bet = 0;
+//        }
+//        return bet;
+//    }
+
     public static void showdown(JsonElement game) {
     }
 }
