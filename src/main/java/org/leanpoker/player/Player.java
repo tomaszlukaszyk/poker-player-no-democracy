@@ -113,11 +113,11 @@ public class Player {
     private int zeroRoundPairBet(){
         int bet = 0;
         if (holeCards.get(0).getRank().equals(holeCards.get(1).getRank())){
-            if (stack < 10*minimumRaise){
+            if (stack < 5*minimumRaise){
                 bet = stack;
             }
             else{
-                bet = 10 * minimumRaise;
+                bet = 5 * minimumRaise;
             }
         }
         return bet;
@@ -185,7 +185,7 @@ public class Player {
                     if(counter == 3) {
                         return true;
                     }
-                };
+                }
             }
         }
         return false;
