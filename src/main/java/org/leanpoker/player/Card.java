@@ -3,7 +3,7 @@ package org.leanpoker.player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Card {
+public class Card implements Comparable<Card> {
 
     private String suit;
     private String rank;
@@ -41,5 +41,10 @@ public class Card {
 
     public void setRank(String rank) {
         this.rank = rank;
+    }
+
+    @Override
+    public int compareTo(Card o) {
+        return this.getRank().compareTo(o.getRank());
     }
 }

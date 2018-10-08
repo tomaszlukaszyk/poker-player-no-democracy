@@ -4,8 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Player {
 
@@ -219,9 +218,9 @@ public class Player {
 //        } else if (colour()) {
 //
 //            return raiseByPercent(60);
-//        } else if (straight()) {
-//
-//            return raiseByPercent(60);
+        } else if (straight()) {
+
+            return raiseByPercent(60);
         } else if (three()) {
 
             return raiseByPercent(40);
@@ -233,6 +232,28 @@ public class Player {
             return raiseByPercent(10);
         }
         return 0;
+    }
+
+    private boolean straight() {
+        List<Card> cards = new ArrayList<>();
+        cards.addAll(holeCards);
+        cards.addAll(communityCards);
+        Collections.sort(cards);
+        List<Integer> ranks = new ArrayList<>();
+
+        for (int i=0; i<cards.size(); i++) {
+            if (!ranks.contains(cards.get(i).getRank())) {
+                ranks.add(cards.get(i).getRank());
+            }
+
+        }
+
+        for (int i=0; i<ranks.size() - 4; i++) {
+            if (ranks.get(i) < ranks.get(i+4) + 4) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void showdown(JsonElement game) {
