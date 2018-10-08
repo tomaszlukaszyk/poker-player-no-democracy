@@ -170,6 +170,7 @@ public class Player {
                 if (card.getRank() == tableCard.getRank()) return true;
             }
         }
+        if (holeCards.get(0).getRank() == holeCards.get(1).getRank()) return true;
         return false;
     }
 
