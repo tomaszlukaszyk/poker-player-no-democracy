@@ -134,7 +134,7 @@ public class Player {
     private int zeroRoundHighCardBet(){
         int bet = 0;
         if(holeCards.get(0).getRank() > 10 || holeCards.get(1).getRank() > 10){
-            bet = raiseByPercent(10);
+            bet = raiseByPercent(5);
         }
         if(holeCards.get(0).getRank() > 12 || holeCards.get(1).getRank() > 12){
             bet = raiseByPercent(15);
