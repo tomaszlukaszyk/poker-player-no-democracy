@@ -4,15 +4,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
     static final String VERSION = "First round handling player";
 
+    int round;
+    int currentBuyIn;
+    int currentBet;
     int minimumRaise;
     int stack;
-    HoleCards holeCards;
+    List<Card> holeCards = new ArrayList<>();
+    List<Card> communityCards = new ArrayList<>();
 
     public static int betRequest(JsonElement request) {
         JsonObject game = request.getAsJsonObject();
@@ -24,54 +29,69 @@ public class Player {
         return player.zeroRoundBehaviour(game);
     }
 
-    private int getMinmumRaise(JsonObject game) {
-        return game.get("minimum_raise").getAsInt();
+    private void setGameStatus(JsonObject game) {
+        round = game.get("round").getAsInt();
+        currentBuyIn = game.get("current_buy_in").getAsInt();
+        minimumRaise = game.get("minimum_raise").getAsInt();
+        currentBet = getCurrentBet(game);
+        stack = getStack(game);
+        holeCards = getHoleCards(game);
+        communityCards = getCommunityCards(game);
     }
 
-    private HoleCards getHoleCards(JsonObject game) {
-        HoleCards holeCards = new HoleCards();
+    private int getCurrentBet(JsonObject game) {
         JsonArray players = game.getAsJsonArray("players");
+        JsonObject ourPlayer = getOurPlayer(players);
 
-        for (JsonElement player: players) {
-            JsonObject currentPlayer = player.getAsJsonObject();
-            String playerName = currentPlayer.get("name").getAsString();
+        return ourPlayer.get("bet").getAsInt();
+    }
 
-            if (playerName.equals("NO democracy")) {
-                System.out.println(playerName);
+    private List<Card> getCommunityCards(JsonObject game) {
+        List<Card> communityCards = new ArrayList<>();
+        JsonArray jsonCommunityCards = game.get("community_cards").getAsJsonArray();
 
-                JsonArray holeCardsJson = currentPlayer.get("hole_cards").getAsJsonArray();
-                holeCards.setFirstCardRank(holeCardsJson.get(0).getAsJsonObject().get("rank").getAsString());
-                holeCards.setSecondCardRank(holeCardsJson.get(1).getAsJsonObject().get("rank").getAsString());
-                holeCards.setFirstCardSuit(holeCardsJson.get(0).getAsJsonObject().get("suit").getAsString());
-                holeCards.setSecondCardSuit(holeCardsJson.get(1).getAsJsonObject().get("suit").getAsString());
-
-            }
+        for (JsonElement jsonCard: jsonCommunityCards) {
+            Card card = new Card();
+            card.setRank(jsonCard.getAsJsonObject().get("rank").getAsString());
+            card.setSuit(jsonCard.getAsJsonObject().get("suit").getAsString());
+            communityCards.add(card);
         }
+        return communityCards;
+    }
+
+    private List<Card> getHoleCards(JsonObject game) {
+        List<Card> holeCards = new ArrayList<>();
+        JsonArray players = game.getAsJsonArray("players");
+        JsonObject ourPlayer = getOurPlayer(players);
+        JsonArray jsonHoleCards = ourPlayer.get("hole_cards").getAsJsonArray();
+
+        for (JsonElement jsonCard: jsonHoleCards) {
+            Card card = new Card();
+            card.setRank(jsonCard.getAsJsonObject().get("rank").getAsString());
+            card.setSuit(jsonCard.getAsJsonObject().get("suit").getAsString());
+            holeCards.add(card);
+        }
+
         return holeCards;
     }
 
-    private void setGameStatus(JsonObject game) {
-        minimumRaise = getMinmumRaise(game);
-        stack = getStack(game);
-        holeCards = getHoleCards(game);
-    }
-
-    private int getStack(JsonObject game) {
-        int stack = 0;
-        JsonArray players = game.getAsJsonArray("players");
-
+    private JsonObject getOurPlayer(JsonArray players) {
         for (JsonElement player: players) {
             JsonObject currentPlayer = player.getAsJsonObject();
             String playerName = currentPlayer.get("name").getAsString();
 
             if (playerName.equals("NO democracy")) {
-                System.out.println(playerName);
-
-                stack = currentPlayer.getAsJsonObject().get("stack").getAsInt();
-
+                return currentPlayer;
             }
         }
-        return stack;
+        return new JsonObject();
+    }
+
+    private int getStack(JsonObject game) {
+        JsonArray players = game.getAsJsonArray("players");
+        JsonObject ourPlayer = getOurPlayer(players);
+
+        return ourPlayer.getAsJsonObject().get("stack").getAsInt();
     }
 
     private int zeroRoundBehaviour(JsonObject game){
@@ -84,7 +104,7 @@ public class Player {
 
     private int zeroRoundPairBet(){
         int bet = 0;
-        if (holeCards.getFirstCardRank().equals(holeCards.getSecondCardRank())){
+        if (holeCards.get(0).getRank().equals(holeCards.get(1).getRank())){
             if (stack < 10*minimumRaise){
                 bet = stack;
             }
@@ -97,7 +117,7 @@ public class Player {
 
     private int zeroRoundSameColorBet(){
         int bet = 0;
-        if (holeCards.getFirstCardSuit().equals(holeCards.getSecondCardSuit())){
+        if (holeCards.get(0).getSuit().equals(holeCards.get(1).getSuit())){
             bet = raiseByPercent(10);
         }
         return bet;
@@ -105,10 +125,10 @@ public class Player {
 
     private int zeroRoundHighCardBet(){
         int bet = 0;
-        if(holeCards.getFirstCardRank() > 10 || holeCards.getSecondCardRank() > 10){
+        if(holeCards.get(0).getRank() > 10 || holeCards.get(1).getRank() > 10){
             bet = raiseByPercent(10);
         }
-        if(holeCards.getFirstCardRank() > 12 || holeCards.getSecondCardRank() > 10){
+        if(holeCards.get(0).getRank() > 12 || holeCards.get(1).getRank() > 10){
             bet = raiseByPercent(15);
         }
         return bet;
@@ -116,7 +136,7 @@ public class Player {
 
     private int raiseByPercent(int percent){
         int bet = 0;
-        if (minimumRaise<stack/percent) bet = stack / percent;
+        if (minimumRaise<stack/percent*100) bet = stack / percent * 100;
         return bet;
     }
 
