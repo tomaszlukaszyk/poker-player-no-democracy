@@ -123,7 +123,8 @@ public class Player {
     private int zeroRoundSameColorBet(){
         int bet = 0;
         if (holeCards.get(0).getSuit().equals(holeCards.get(1).getSuit())){
-            bet = raiseByPercent(10);
+            if (callValue > 0.1 * stack) bet = 0;
+            else bet = callValue;
         }
         return bet;
     }
@@ -220,9 +221,10 @@ public class Player {
 //        } else if (colour()) {
 //
 //            return raiseByPercent(60);
-        } //else if (straight()) {
+        } else if (straight()) {
 
-           // return raiseByPercent(60); }
+           return raiseByPercent(60);
+        }
             else if (three()) {
 
             return raiseByPercent(60);
