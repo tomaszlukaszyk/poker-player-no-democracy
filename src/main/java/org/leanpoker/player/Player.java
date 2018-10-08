@@ -226,7 +226,7 @@ public class Player {
 
             return raiseByPercent(20);
         } else if (highCard()) {
-            return raiseByPercent(10);
+            return raiseByPercent(5);
         }
         return 0;
     }
