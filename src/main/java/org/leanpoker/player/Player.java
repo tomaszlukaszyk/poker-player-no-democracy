@@ -132,10 +132,10 @@ public class Player {
             bet = raiseByPercent(5);
         }
         if(holeCards.get(0).getRank() > 12 || holeCards.get(1).getRank() > 12){
-            bet = raiseByPercent(10);
+            bet = raiseByPercent(8);
         }
         if(holeCards.get(0).getRank() > 12 && holeCards.get(1).getRank() > 12){
-            bet = raiseByPercent(20);
+            bet = raiseByPercent(12);
         }
         return bet;
     }
