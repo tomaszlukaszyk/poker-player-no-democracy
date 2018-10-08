@@ -38,6 +38,7 @@ public class Player {
 
     private void setGameStatus(JsonObject game) {
         round = game.get("round").getAsInt();
+        System.out.println(round);
         currentBuyIn = game.get("current_buy_in").getAsInt();
         minimumRaise = getMinmumRaise(game);
         currentBet = getCurrentBet(game);
