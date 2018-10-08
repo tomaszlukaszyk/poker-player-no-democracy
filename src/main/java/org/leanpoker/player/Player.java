@@ -219,10 +219,10 @@ public class Player {
 //        } else if (colour()) {
 //
 //            return raiseByPercent(60);
-        } else if (straight()) {
+        } //else if (straight()) {
 
-            return raiseByPercent(60);
-        } else if (three()) {
+           // return raiseByPercent(60); }
+            else if (three()) {
 
             return raiseByPercent(60);
         } else if (pair()) {
