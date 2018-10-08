@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Player {
 
-    static final String VERSION = "First round handling player";
+    static final String VERSION = "Real player";
 
     int round;
     int currentBuyIn;
@@ -251,10 +251,13 @@ public class Player {
 
         }
 
-        for (int i=0; i<ranks.size() - 4; i++) {
-            if (ranks.get(i) < ranks.get(i+4) + 4) {
-                return true;
-            }
+        if (ranks.size() > 4) {
+            for (int i=0; i<ranks.size() - 4; i++) {
+                if (ranks.get(i) < ranks.get(i+4) + 4) {
+                    return true;
+                }
+        }
+
         }
         return false;
     }
