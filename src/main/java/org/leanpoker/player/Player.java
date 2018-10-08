@@ -88,7 +88,6 @@ public class Player {
         for (JsonElement player: players) {
             JsonObject currentPlayer = player.getAsJsonObject();
             String playerName = currentPlayer.get("name").getAsString();
-
             if (playerName.equals("NO democracy")) {
                 return currentPlayer;
             }
@@ -137,8 +136,11 @@ public class Player {
         if(holeCards.get(0).getRank() > 10 || holeCards.get(1).getRank() > 10){
             bet = raiseByPercent(10);
         }
-        if(holeCards.get(0).getRank() > 12 || holeCards.get(1).getRank() > 10){
+        if(holeCards.get(0).getRank() > 12 || holeCards.get(1).getRank() > 12){
             bet = raiseByPercent(15);
+        }
+        if(holeCards.get(0).getRank() > 12 && holeCards.get(1).getRank() > 12){
+            bet = raiseByPercent(40);
         }
         return bet;
     }
@@ -224,12 +226,11 @@ public class Player {
 //            return raiseByPercent(60);
         } else if (three()) {
 
-            return raiseByPercent(40);
+            return raiseByPercent(60);
         } else if (pair()) {
 
             return raiseByPercent(20);
         } else if (highCard()) {
-
             return raiseByPercent(10);
         }
         return 0;
