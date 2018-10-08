@@ -106,7 +106,7 @@ public class Player {
         int bet = 0;
         bet = zeroRoundPairBet();
         if (bet == 0) bet = zeroRoundSameColorBet();
-        if (bet == 0) bet = zeroRoundHighCardBet();
+        //if (bet == 0) bet = zeroRoundHighCardBet();
         return bet;
     }
 
