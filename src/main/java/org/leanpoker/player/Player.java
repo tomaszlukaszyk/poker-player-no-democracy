@@ -145,7 +145,7 @@ public class Player {
 
     private int raiseByPercent(int percent){
         int bet = 0;
-        if (minimumRaise<stack/percent*100) bet = stack / percent * 100;
+        if (minimumRaise<stack * percent/100) bet = stack * percent / 100;
         return bet;
     }
 
@@ -199,7 +199,7 @@ public class Player {
                     if(counter == 4) {
                         return true;
                     }
-                };
+                }
             }
         }
         return false;
