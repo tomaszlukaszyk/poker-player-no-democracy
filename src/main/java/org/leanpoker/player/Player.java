@@ -112,12 +112,7 @@ public class Player {
     private int zeroRoundPairBet(){
         int bet = 0;
         if (holeCards.get(0).getRank().equals(holeCards.get(1).getRank())){
-            if (stack < 12*minimumRaise){
-                bet = stack;
-            }
-            else{
-                bet = 12 * minimumRaise;
-            }
+            bet = stack;
         }
         return bet;
     }
